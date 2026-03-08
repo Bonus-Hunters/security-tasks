@@ -92,6 +92,44 @@ public class PlayfairCipher {
     // TODO: Implement this method to decrypt the ciphertext back to plaintext
     public String decrypt(String text) {
         // Students should complete this part
-        return null;
+        // Ensure even length for processing
+        if (text.length() % 2 != 0) {
+            text = text.substring(0, text.length() - 1); // Remove last char if odd
+        }
+        StringBuilder decryptedText = new StringBuilder();
+
+        for (int i = 0; i < text.length(); i += 2) {
+            int[] pos1 = findPosition(text.charAt(i));
+            int[] pos2 = findPosition(text.charAt(i + 1));
+
+            if (pos1 == null || pos2 == null) continue; // Safety check
+            char c1, c2;
+            if (pos1[0] == pos2[0]) {  // Same row
+                c1 = keyMatrix[pos1[0]][(pos1[1] - 1 + 5) % 5];
+                c2 = keyMatrix[pos2[0]][(pos2[1] - 1 + 5) % 5];
+                decryptedText.append(c1);
+                decryptedText.append(c2);
+            } else if (pos1[1] == pos2[1]) {  // Same column
+                c1 = keyMatrix[(pos1[0] - 1 + 5) % 5][pos1[1]];
+                c2 = keyMatrix[(pos2[0] - 1 + 5) % 5][pos2[1]];
+                decryptedText.append(c1);
+                decryptedText.append(c2);
+            } else {  // Rectangle swap
+                c1 = keyMatrix[pos1[0]][pos2[1]];
+                c2 = keyMatrix[pos2[0]][pos1[1]];
+                decryptedText.append(c1);
+                decryptedText.append(c2);
+            }
+        }
+        StringBuilder originalText = new StringBuilder();
+        for (int i = 0; i < decryptedText.length(); i++) {
+            char c = decryptedText.charAt(i);
+            if (c != 'X' || (i > 0 && i + 1<decryptedText.length() && decryptedText.charAt(i - 1) != decryptedText.charAt(i + 1))) {
+                originalText.append(c);
+            }
+        }
+//        System.out.println(originalText.toString());
+         return originalText.toString();
     }
+
 }
