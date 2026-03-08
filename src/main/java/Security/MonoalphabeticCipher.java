@@ -99,6 +99,40 @@ public class MonoalphabeticCipher {
         /// Z	0.09
     public String analyseUsingCharFrequency(String cipher) {
         // Students should complete this part
-        return null;
+        String T = "ETAOINSRHLDCUMFPGWYBVKXJQZ".toLowerCase();
+        cipher = cipher.toLowerCase();
+        Integer[] frequency = new Integer[26];
+        Arrays.fill(frequency, 0);
+        for (int i = 0; i < cipher.length(); i++) {
+            char c = cipher.charAt(i);
+            if (Character.isLetter(c)) {
+                frequency[Character.toLowerCase(c) - 'a']++;
+            }
+        }
+        Integer[] sortedFrequency = Arrays.copyOf(frequency, frequency.length);
+        Arrays.sort(sortedFrequency, Collections.reverseOrder());
+        boolean [] visited = new boolean[26];
+        Map<Character, Character> charCipher = new HashMap<>();
+        for(int i = 0; i < frequency.length; i++) {
+            for(int j = 0; j < frequency.length; j++) {
+                if(Objects.equals(frequency[j], sortedFrequency[i]) && !visited[j]) {
+                    visited[j] = true;
+                    charCipher.put((char) (j + 'a'),T.charAt(i));
+                    break;
+                }
+            }
+        }
+        StringBuilder plainText = new StringBuilder();
+        for (int i = 0; i < cipher.length(); i++) {
+            char c = cipher.charAt(i);
+            if (Character.isLetter(c)) {
+                plainText.append(charCipher.get(c));
+            } else {
+                plainText.append(c);
+            }
+        }
+//        System.out.println(plainText.length());
+
+        return plainText.toString();
     }
 }
