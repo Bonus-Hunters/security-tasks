@@ -140,12 +140,29 @@ public class HillCipher {
     }
 
     public List<Integer> decrypt(List<Integer> cipherText, List<Integer> key) {
-        // Students should complete this part
-        return null;
+        int n = findMatrixSize(key.size());
+        if (n == -1) throw new InvalidAnalysisException();
+        List<Integer> inverseKey = invertMatrix(key, n);
+        return encrypt(cipherText, inverseKey);
     }
 
     public List<Integer> analyse3By3Key(List<Integer> plainText, List<Integer> cipherText) {
-        // Students should complete this part
-        throw new InvalidAnalysisException();
+        if (plainText.size() != 9 || cipherText.size() != 9)
+            throw new InvalidAnalysisException();
+
+        List<Integer> P = new ArrayList<>();
+        List<Integer> C = new ArrayList<>();
+
+        // Transpose the input lists into Column-Major matrices
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                P.add(plainText.get(i + j * 3));
+                C.add(cipherText.get(i + j * 3));
+            }
+        }
+
+        // Solve for K: K = C * P^-1
+        List<Integer> P_inv = invertMatrix(P, 3);
+        return  multiplyMatricesMod26(C, P_inv, 3);
     }
 }
