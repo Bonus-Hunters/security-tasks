@@ -2,6 +2,7 @@ import Security.RepeatingKey;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 public class RepeatingKeyTest {
 
     String mainPlain = "wearediscoveredsaveyourself";
@@ -16,6 +17,8 @@ public class RepeatingKeyTest {
     void repVignereTestDec1() {
         RepeatingKey algorithm = new RepeatingKey();
         String plain = algorithm.decrypt(mainCipherRep, mainKey);
+        System.out.println(plain);
+        System.out.println(mainPlain);
         assertTrue(plain.equalsIgnoreCase(mainPlain));
     }
 

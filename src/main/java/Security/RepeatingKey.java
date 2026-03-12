@@ -1,14 +1,22 @@
 package Security;
 
 public class RepeatingKey {
+    // p+k%26 = c --> p=c-k%26 nd k=c-p%26
     public String analyse(String plainText, String cipherText) {
-        // Students should complete this part
         return null;
     }
 
     public String decrypt(String cipherText, String key) {
         // Students should complete this part
-        return null;
+        key = key.toLowerCase().replaceAll("[^a-z]", "");
+        cipherText = cipherText.toLowerCase().replaceAll("[^a-z]", "");
+        StringBuilder plainText = new StringBuilder();
+        for(int i=0; i<cipherText.length(); i++){
+            int c = cipherText.charAt(i)-'a';
+            int k= key.charAt(i%key.length())-'a';
+            plainText.append((char)((((c-k)%26+26)%26)+'a'));
+        }
+        return plainText.toString();
     }
 
     public String encrypt(String plainText, String key) {
