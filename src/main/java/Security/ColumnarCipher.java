@@ -4,9 +4,61 @@ import java.util.*;
 public class ColumnarCipher {
 
     public List<Integer> analyse(String plainText, String cipherText) {
-        // TODO: Analyze the plainText and cipherText to determine the key(s)
+        plainText = plainText.replace(" ", "");
+        cipherText = cipherText.replace(" ", "");
+        int len = cipherText.length();
+        for(int col = 2; col <= len; col++)
+        {
+            if(len % col != 0) continue;
+            int row = len / col;
 
-        return new ArrayList<>(); // Placeholder return
+            char[][] grid = new char[row][col];
+            
+            int idx = 0;
+            for(int r = 0; r < row; r++)
+            {
+                for(int c = 0; c < col; c++)
+                {
+                    if(idx < len) grid[r][c] = plainText.charAt(idx++);
+                    else grid[r][c] = 'x';
+                }
+            }
+
+            Map<String, Set<Integer>> colid = new HashMap<>();
+            for(int c = 0; c < col; c++)
+            {
+                StringBuilder sb = new StringBuilder();
+                for(int r = 0; r < row; r++)
+                    sb.append(grid[r][c]);
+                String s = sb.toString();
+                Set<Integer> set = colid.get(s);
+                if(set == null)
+                {
+                    set = new LinkedHashSet<>();
+                    colid.put(s, set);
+                }
+                set.add(c);
+            }
+
+            Boolean valid = true;
+            Integer[] key = new Integer[col];
+            for(int c = 0; c < col; c++)
+            {
+                String s = cipherText.substring(c * row, (c + 1) * row);
+                Set<Integer> set = colid.get(s);
+                if(set == null || set.isEmpty())
+                {
+                    valid = false;
+                    break;
+                }
+                Iterator<Integer> it = set.iterator();
+                Integer keypos = it.next(); 
+                it.remove();      
+                key[keypos] = c + 1; 
+            }
+            if(valid) return new ArrayList<>(Arrays.asList(key));
+        }
+        return new ArrayList<>(); 
     }
 
     public String decrypt(String cipherText, List<Integer> key) {
