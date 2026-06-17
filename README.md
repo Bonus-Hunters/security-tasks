@@ -2,15 +2,6 @@
 
 A comprehensive Java implementation of classical and modern encryption/decryption algorithms developed for the Computer and Network Security course at the Faculty of Computer and Information Sciences, Ain Shams University.
 
-## 📚 Course Information
-
-- **Institution**: Ain Shams University
-- **Faculty**: Faculty of Computer and Information Sciences
-- **Course**: Computer and Network Security
-- **Language**: Java 17
-- **Build Tool**: Maven
-- **Testing Framework**: JUnit 5
-
 ## 🔐 Implemented Algorithms
 
 This repository includes implementations of the following cryptographic algorithms:
@@ -186,7 +177,3 @@ Tests are located in `src/test/java/` and cover:
 
 This project is provided for educational purposes as part of the Computer and Network Security course at Ain Shams University.
 
----
-
-**Last Updated**: June 2026
-**Repository**: Security Tasks 
